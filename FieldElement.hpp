@@ -27,7 +27,7 @@ public:
     FieldElement(std::string bin);
     
     uint64_t getbit(std::size_t i);
-    void setbit(std::size_t i);
+    void setbit(uint64_t value, std::size_t i);
     std::vector<uint64_t> get_coeffs();
     std::size_t size();
     void push_back(uint64_t value);

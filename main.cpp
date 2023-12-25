@@ -11,7 +11,7 @@
 
 #include "GaluaField.hpp"
 
-void test(GaluaField &gf, FieldElement &a, FieldElement &b) {
+void test(GaluaField &gf, FieldElement &a, FieldElement &b, FieldElement &n) {
     std::vector<double> addition_times, multiplication_times, square_times, power_times, inverse_times, trace_times, total_times;
 
     for (int i = 0; i < 10; ++i)
@@ -43,17 +43,17 @@ void test(GaluaField &gf, FieldElement &a, FieldElement &b) {
         auto square_end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> square_duration = square_end - square_start;
         square_times.push_back(square_duration.count());
-        std::cout << "Division Result: " << gf.to_bin(square_result) << std::endl;
-        std::cout << "Division Execution Time: " << square_duration.count() << " seconds" << std::endl;
+        std::cout << "Square Result: " << gf.to_bin(square_result) << std::endl;
+        std::cout << "Square Execution Time: " << square_duration.count() << " seconds" << std::endl;
 
         // Power
         auto power_start = std::chrono::high_resolution_clock::now();
-        FieldElement power_result = gf.pow(a, b);
+        FieldElement power_result = gf.pow(a, n);
         auto power_end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> power_duration = power_end - power_start;
         power_times.push_back(power_duration.count());
-        std::cout << "Square Result: " << gf.to_bin(power_result) << std::endl;
-        std::cout << "Square Execution Time: " << power_duration.count() << " seconds" << std::endl;
+        std::cout << "Power Result: " << gf.to_bin(power_result) << std::endl;
+        std::cout << "Power Execution Time: " << power_duration.count() << " seconds" << std::endl;
         
         // Inverse
         auto inverse_start = std::chrono::high_resolution_clock::now();
@@ -61,8 +61,8 @@ void test(GaluaField &gf, FieldElement &a, FieldElement &b) {
         auto inverse_end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> inverse_duration = inverse_end - inverse_start;
         inverse_times.push_back(inverse_duration.count());
-        std::cout << "Square Result: " << gf.to_bin(inverse_result) << std::endl;
-        std::cout << "Square Execution Time: " << inverse_duration.count() << " seconds" << std::endl;
+        std::cout << "Inverse Result: " << gf.to_bin(inverse_result) << std::endl;
+        std::cout << "Inverse Execution Time: " << inverse_duration.count() << " seconds" << std::endl;
         
         // Trace
         auto trace_start = std::chrono::high_resolution_clock::now();
@@ -70,8 +70,8 @@ void test(GaluaField &gf, FieldElement &a, FieldElement &b) {
         auto trace_end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> trace_duration = trace_end - trace_start;
         trace_times.push_back(trace_duration.count());
-        std::cout << "Square Result: " << gf.to_bin(trace_result) << std::endl;
-        std::cout << "Square Execution Time: " << trace_duration.count() << " seconds" << std::endl;
+        std::cout << "Trace Result: " << gf.to_bin(trace_result) << std::endl;
+        std::cout << "Trace Execution Time: " << trace_duration.count() << " seconds" << std::endl;
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = end - start;
@@ -116,13 +116,14 @@ void test(GaluaField &gf, FieldElement &a, FieldElement &b) {
 
 
 int main(int argc, const char * argv[]) {
-    FieldElement g("100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010111");
+    FieldElement a("01000101010100001100100101111111111011011101111101101011110001111100100111011100011001011010010100001010111111110110110100101100100010101100010010011100000101001011010001101");
+    FieldElement g("100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000111");
     GaluaField gf(g);
-    FieldElement b("11");
-    FieldElement a("1010");
-    FieldElement c = gf.mul(b, a);
-    std::cout << gf.to_bin(c) << std::endl;
-    test(gf, a, b);
+    FieldElement b("10101011100101110101110111011110011000101011010001101011111011000111010010100011111010110000010101000011001101100000011011100001011111010000111101110101000001001111111001101");
+    FieldElement n("1110000100101011000010011100000010010101001000101111010000000011010110001100001000011111001010010010001100110110011101010011011111010100001001010111010111000010111011001");
+    FieldElement c = gf.trace(a);
+    //std::cout << std::endl << gf.to_bin(c) << std::endl;
+    test(gf, a, b, n);
     return 0;
 }
 

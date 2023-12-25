@@ -25,8 +25,20 @@ FieldElement::FieldElement(std::string bin)
     for (int i = bin.size() - 1; i >= 0; --i)
     {
         if (bin[i] == '1')
-            setbit(bin.size() - 1 - i);
+            setbit(1, bin.size() - 1 - i);
     }
+}
+
+void FieldElement::setbit(uint64_t value, std::size_t i)
+{
+    uint64_t i_1 = i / 64;
+    uint64_t i_2 = i % 64;
+    
+    //std::cout << " initial " << _coeffs[i_1] << std::endl;
+    _coeffs[i_1] = (_coeffs[i_1]) & ~((uint64_t)1 << i_2);
+    //std::cout << " mid " << _coeffs[i_1] << std::endl;
+    _coeffs[i_1] = (_coeffs[i_1]) | (value << i_2);
+    //std::cout << " final " << _coeffs[i_1] << std::endl;
 }
 
 uint64_t FieldElement::getbit(std::size_t i)
@@ -37,13 +49,6 @@ uint64_t FieldElement::getbit(std::size_t i)
     return ((_coeffs[i_1] >> i_2) & 1);
 }
 
-void FieldElement::setbit(std::size_t i)
-{
-    uint64_t i_1 = i / 64;
-    uint64_t i_2 = i % 64;
-    
-    _coeffs[i_1] = (_coeffs[i_1] | (1 << i_2));
-}
 
 std::vector<uint64_t> FieldElement::get_coeffs()
 {
